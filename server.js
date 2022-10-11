@@ -56,7 +56,7 @@ async function dateObserver() {
 
     const currentDate = new Date();
     // test date
-    // const currentDate = new Date('October 17, 2022 15:58:00');
+    // const currentDate = new Date('October 17, 2022 16:00:00');
     console.log(currentDate);
     const isTodayMaintenance = thirdMonday.getUTCFullYear() === currentDate.getUTCFullYear() 
                             && thirdMonday.getUTCMonth() === currentDate.getUTCMonth() 
@@ -77,40 +77,42 @@ async function dateObserver() {
     thirdMondayMaintenanceEndDate.setUTCHours(thirdMonday.getUTCHours() + 2);
 
     if (is3DaysBeforeMaintenance) {
-        tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
+        tweetBody = `⚠️ Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
         // post tweetBody if postedFlag value is false
         !postFlags.posted3DayWarning && postTweet(tweetBody);
         postFlags.posted3DayWarning = true;
     } else if (is1DayBeforeMaintenance) {
-        tweetBody = `⚠️Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
+        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
         // post tweetBody if postedFlag value is false
         !postFlags.posted24HourWarning && postTweet(tweetBody);
         postFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeMaintenance) {
-        tweetBody = `🚨Alert - In TWO hours, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleTimeString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleTimeString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
         !postFlags.posted2HourWarning && postTweet(tweetBody);
         postFlags.posted2HourWarning = true;
     } else if (isMaintenance) {
-        tweetBody = `🚨Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
         !postFlags.postedBeginsWarning && postTweet(tweetBody);
         postFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeMaintenanceEnds) {
-        tweetBody = `⚠️Notice - The eAmusement Service is expected to be back online in ONE hour, at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
         !postFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
         postFlags.postedEndsIn1HourNotice = true;
     } else if (isMaintenanceOver) {
-        tweetBody = `✅Notice - The eAmusement Service is expected to be back online now`;
+        tweetBody = `✅ Notice - The eAmusement Service is expected to be back online now`;
         // post tweetBody if postedFlag value is false
         !postFlags.postedEndedNotice && postTweet(tweetBody);
         postFlags.postedEndedNotice = true;
     }
     
+    // to-do - prepare values for the next month.
     const readyToBeReset = Object.values(postFlags).every((flagValue) => {
         return flagValue === true;
     });
+
 
     return;
 }
