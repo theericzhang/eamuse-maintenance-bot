@@ -22,7 +22,9 @@ const clientMain = new TwitterApi(
     }
 );
 
-// manual flags to chain?
+// these key values will set to true once time conditions are met
+// with these "use once" flags, we can make sure we are posting a tweet once during a monthly lifecycle
+// once all values are true, we know to reset the object back to its original state
 let postFlags = {
     posted3DayWarning : false,
     posted24HourWarning : false,
@@ -32,17 +34,13 @@ let postFlags = {
     postedEndedNotice : false
 };
 
-const daysOfTheWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-]
+// helper function to post tweetBody
+async function postTweet(tweetBody) {
+    await clientMain.v1.tweet(tweetBody);
+    console.log('Posted! - ', tweetBody);
+}
 
-function dateObserver() {
+async function dateObserver() {
     let tweetBody = ``;
 
     const firstTuesdayDate = new Date();
@@ -58,7 +56,8 @@ function dateObserver() {
 
     const currentDate = new Date();
     // test date
-    // const currentDate = new Date('October 18, 2022');
+    // const currentDate = new Date('October 17, 2022 15:58:00');
+    console.log(currentDate);
     const isTodayMaintenance = thirdMonday.getUTCFullYear() === currentDate.getUTCFullYear() 
                             && thirdMonday.getUTCMonth() === currentDate.getUTCMonth() 
                             && thirdMonday.getUTCDate() === currentDate.getUTCDate();
@@ -79,33 +78,41 @@ function dateObserver() {
 
     if (is3DaysBeforeMaintenance) {
         tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.posted3DayWarning && postTweet(tweetBody);
         postFlags.posted3DayWarning = true;
     } else if (is1DayBeforeMaintenance) {
         tweetBody = `⚠️Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${thirdMonday.toLocaleString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleString()} ET`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.posted24HourWarning && postTweet(tweetBody);
         postFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeMaintenance) {
         tweetBody = `🚨Alert - In TWO hours, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdMonday.toLocaleTimeString()} ET and ending ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.posted2HourWarning && postTweet(tweetBody);
         postFlags.posted2HourWarning = true;
     } else if (isMaintenance) {
         tweetBody = `🚨Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.postedBeginsWarning && postTweet(tweetBody);
         postFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeMaintenanceEnds) {
         tweetBody = `⚠️Notice - The eAmusement Service is expected to be back online in ONE hour, at ${thirdMondayMaintenanceEndDate.toLocaleTimeString()} ET`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
         postFlags.postedEndsIn1HourNotice = true;
     } else if (isMaintenanceOver) {
         tweetBody = `✅Notice - The eAmusement Service is expected to be back online now`;
+        // post tweetBody if postedFlag value is false
+        !postFlags.postedEndedNotice && postTweet(tweetBody);
         postFlags.postedEndedNotice = true;
     }
     
     const readyToBeReset = Object.values(postFlags).every((flagValue) => {
         return flagValue === true;
-    })
-
-    console.log(readyToBeReset);
+    });
 
     return;
 }
 
-const dateCheckingHandler = setInterval(() => dateObserver(), 3000);
-
-// await clientMain.v1.tweet('hello! this is a test');
+const dateCheckingHandler = setInterval(() => dateObserver(), 10000);
