@@ -57,12 +57,14 @@ async function extendedMaintenanceObserver() {
     referenceDate.setHours(referenceDate.getHours() + timezoneOffsetJapanUTC);
     // console.log(referenceDate);
     referenceDate.setUTCDate(1);
-    // console.log(referenceDate);
+    console.log('reference date before finding tuesday - expected to be the 1st every time: ' ,referenceDate);
 
     // finds first tuesday and sets referenceDate to it
-    while (referenceDate.getDay() !== 2) {
+    while (referenceDate.getUTCDay() !== 2) {
+        console.log('should set here');
         referenceDate.setDate(referenceDate.getDate() + 1);
     }
+    console.log('reference date after finding tuesday - expected to be the first tuesday every time: ',referenceDate);
     // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our recently set referenceDate
     const extendedMaintenanceDay = new Date(referenceDate.setDate(referenceDate.getDate() + 14));
     console.log('extended ',extendedMaintenanceDay);
@@ -87,25 +89,29 @@ async function extendedMaintenanceObserver() {
     
     // begin time comparisons - Because the time portion to extendedMaintenanceDay is set in JST, we can manually check to see if the hours fall on maintenance times
     // extended maintenance happens from 2am-7am JST
-    // an additional flag, isPastExtendedMaintenance is needed to determine if all the flags are safe to reset.
+    // an additional condition, isPastExtendedMaintenance is needed to determine if all the flags are safe to reset
+    // flags are used to guard the postTweet() function. if a tweet has not been posted yet, its flag value will be false. 
+    // after a tweet has been posted, the flag value will be set to true.
+    // the next time the extendedMaintenanceObserver() will be run, postTweet() will not be run again.
     const is2HoursBeforeExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 0);
     const isExactlyExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 2);
     const is1HourBeforeExtendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 6);
-    const extendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 7);
+    const extendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 7 && extendedMaintenanceDay.getUTCMinutes() < 1);
     const isPastExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 7 && extendedMaintenanceDay.getUTCMinutes() >= 1);
     
     const extendedMaintenanceDayTimeStart = new Date(extendedMaintenanceDay);
     // 1PM ET
     extendedMaintenanceDayTimeStart.setUTCHours(17, 0, 0, 0);
 
-    console.log(extendedMaintenanceDayTimeStart.toLocaleString());
+    console.log('maintenance starts: ', extendedMaintenanceDayTimeStart.toLocaleString());
 
     const extendedMaintenanceDayTimeEnd = new Date(extendedMaintenanceDay);
     // 6PM ET
     extendedMaintenanceDayTimeEnd.setUTCHours(22, 0, 0, 0);
 
-    console.log(extendedMaintenanceDayTimeEnd.toLocaleString());
+    console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString());
 
+    // checking if conditions we set are true. if they are, set the tweetBody, postTweet, and set the flags to true.
     if (is3DaysBeforeExtendedMaintenance) {
         tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
@@ -134,17 +140,17 @@ async function extendedMaintenanceObserver() {
     } else if (extendedMaintenanceEnds) {
         tweetBody = `✅ Notice - The eAmusement Service is expected to be back online now`;
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedEndedNotice && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.postedEndedNotice && !isPastExtendedMaintenance && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndedNotice = true;
     }
 
-    // to-do - prepare values for the next month.
-    // (once all flags are true) we create a boolean that reflects all flags = true
+    // check that all flags are true. this will signal that flags are ready to be reset.
     const readyToBeReset = Object.values(extendedMaintenancePostedFlags).every((flagValue) => {
         return flagValue === true;
     });
 
-    // if it's ready to be reset, reset the flags. 
+    // reset the flags, making sure to also check that it's past maintenance. 
+    // why? there is an edge case that it is 7:00am JST and 
     readyToBeReset && isPastExtendedMaintenance && resetFlags();
     return;
 }
