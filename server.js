@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.send("twitter-eamuse-warn");
 });
 
-// create a Twitter client with bearer token
+// create a Twitter client with apikey+secret & accesstoken+secret
 const clientMain = new TwitterApi(
     { 
         appKey: process.env.TWITTER_API_KEY, 
@@ -33,6 +33,10 @@ let extendedMaintenancePostedFlags = {
     postedEndsIn1HourNotice : false,
     postedEndedNotice : false
 };
+
+function resetFlags() {
+    Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = true);
+}
 
 // helper function to post tweetBody
 async function postTweet(tweetBody) {
@@ -135,11 +139,11 @@ async function extendedMaintenanceObserver() {
     }
     // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our current date
     const extendedMaintenanceDay = new Date(referenceDate.setDate(referenceDate.getDate() + 14));
-    // console.log('extended ',extendedMaintenanceDay);
+    console.log('extended ',extendedMaintenanceDay);
 
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + timezoneOffsetJapanUTC);
-    // console.log('current ', currentDate);
+    console.log('current ', currentDate);
 
     // when getting values, it is mandatory to getUTC__, because otherwise it will show in UTC +0 values.
     // calling getUTC__ will provide us with time local to Japan, UTC+9
@@ -158,19 +162,22 @@ async function extendedMaintenanceObserver() {
     const isExactlyExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 2);
     const is1HourBeforeExtendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 6);
     const extendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 7);
+    const isPastExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 7 && extendedMaintenanceDay.getUTCMinutes() >= 1);
     
     const extendedMaintenanceDayTimeStart = new Date(extendedMaintenanceDay);
+    // 1PM ET
     extendedMaintenanceDayTimeStart.setUTCHours(17, 0, 0, 0);
 
     console.log(extendedMaintenanceDayTimeStart.toLocaleString());
 
     const extendedMaintenanceDayTimeEnd = new Date(extendedMaintenanceDay);
+    // 6PM ET
     extendedMaintenanceDayTimeEnd.setUTCHours(22, 0, 0, 0);
 
     console.log(extendedMaintenanceDayTimeEnd.toLocaleString());
 
     if (is3DaysBeforeExtendedMaintenance) {
-        tweetBody = `⚠️ Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted3DayWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted3DayWarning = true;
@@ -180,7 +187,7 @@ async function extendedMaintenanceObserver() {
         !extendedMaintenancePostedFlags.posted24HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeExtendedMaintenance) {
-        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be undergoing extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be starting extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted2HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted2HourWarning = true;
@@ -200,6 +207,16 @@ async function extendedMaintenanceObserver() {
         !extendedMaintenancePostedFlags.postedEndedNotice && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndedNotice = true;
     }
+
+    // to-do - prepare values for the next month.
+    // (once all flags are true) we create a boolean that reflects all flags = true
+    const readyToBeReset = Object.values(extendedMaintenancePostedFlags).every((flagValue) => {
+        return flagValue === true;
+    });
+
+    // if it's ready to be reset, reset the flags. 
+    readyToBeReset && isPastExtendedMaintenance && resetFlags();
+    return;
 }
 
-const dateCheckingHandler = setInterval(() => extendedMaintenanceObserver(), 3000);
+const dateCheckingHandler = setInterval(() => extendedMaintenanceObserver(), 6000);
