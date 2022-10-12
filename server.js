@@ -5,7 +5,7 @@ import "dotenv/config";
 const app = express();
 const port = 5000;
 
-// expeccting json
+// expecting json
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -13,6 +13,8 @@ app.get("/", (req, res) => {
 });
 
 // create a Twitter client with apikey+secret & accesstoken+secret
+// twitter account with elevated developer permissions is REQUIRED to use v1.tweet() functions
+// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update
 const clientMain = new TwitterApi(
     { 
         appKey: process.env.TWITTER_API_KEY, 
@@ -35,94 +37,17 @@ let extendedMaintenancePostedFlags = {
 };
 
 function resetFlags() {
-    Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = true);
+    Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = false);
 }
 
 // helper function to post tweetBody
+// postTweet() is called when timing conditions are met
 async function postTweet(tweetBody) {
     await clientMain.v1.tweet(tweetBody);
     console.log('Posted! - ', tweetBody);
 }
 
-async function dateObserverExtendedMaintenance() {
-    let tweetBody = ``;
-
-    const firstTuesdayDate = new Date();
-    // console.log(firstTuesdayDate);
-    firstTuesdayDate.setUTCDate(1);
-
-    // 
-    while (firstTuesdayDate.getDay() !== 2) {
-        firstTuesdayDate.setDate(firstTuesdayDate.getDate() + 1);
-    }
-
-    let thirdTuesday = new Date(firstTuesdayDate);
-    thirdTuesday.setUTCDate(firstTuesdayDate.getDate() + 14);
-    thirdTuesday.setUTCHours(20, 0, 0, 0);
-
-    const currentDate = new Date();
-    // test date
-    // const currentDate = new Date('October 17, 2022 18:00:00');
-    // console.log(currentDate);
-    const isTodayMaintenance = thirdTuesday.getUTCFullYear() === currentDate.getUTCFullYear() 
-                            && thirdTuesday.getUTCMonth() === currentDate.getUTCMonth() 
-                            && thirdTuesday.getUTCDate() === currentDate.getUTCDate();
-    const is3DaysBeforeMaintenance = thirdTuesday.getUTCFullYear() === currentDate.getUTCFullYear() 
-                                  && thirdTuesday.getUTCMonth() === currentDate.getUTCMonth() 
-                                  && (thirdTuesday.getUTCDate() - currentDate.getUTCDate() === 3);
-    const is1DayBeforeMaintenance = thirdTuesday.getUTCFullYear() === currentDate.getUTCFullYear() 
-                                  && thirdTuesday.getUTCMonth() === currentDate.getUTCMonth() 
-                                  && (thirdTuesday.getUTCDate() - currentDate.getUTCDate() === 1);
-    const is2HoursBeforeMaintenance = isTodayMaintenance && (thirdTuesday.getUTCHours() - currentDate.getUTCHours() === 2);
-    const isMaintenance = isTodayMaintenance && (thirdTuesday.getUTCHours() === currentDate.getUTCHours());
-    const is1HourBeforeMaintenanceEnds = isTodayMaintenance && (thirdTuesday.getUTCHours() + 1 === currentDate.getUTCHours());
-    const isMaintenanceOver = isTodayMaintenance && (thirdTuesday.getUTCHours() + 2 === currentDate.getUTCHours());
-    // isTodayMaintenance 
-
-    const thirdTuesdayMaintenanceEndDate = new Date(thirdTuesday);
-    thirdTuesdayMaintenanceEndDate.setUTCHours(thirdTuesday.getUTCHours() + 2);
-
-    if (is3DaysBeforeMaintenance) {
-        tweetBody = `⚠️ Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdTuesday.toLocaleString()} ET and ending ${thirdTuesdayMaintenanceEndDate.toLocaleString()} ET`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted3DayWarning && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.posted3DayWarning = true;
-    } else if (is1DayBeforeMaintenance) {
-        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${thirdTuesday.toLocaleString()} ET and ending ${thirdTuesdayMaintenanceEndDate.toLocaleString()} ET`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted24HourWarning && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.posted24HourWarning = true;
-    } else if (is2HoursBeforeMaintenance) {
-        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be undergoing extended maintenance, beginning ${thirdTuesday.toLocaleTimeString()} ET and ending ${thirdTuesdayMaintenanceEndDate.toLocaleTimeString()} ET`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted2HourWarning && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.posted2HourWarning = true;
-    } else if (isMaintenance) {
-        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${thirdTuesdayMaintenanceEndDate.toLocaleTimeString()} ET`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedBeginsWarning && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.postedBeginsWarning = true;
-    } else if (is1HourBeforeMaintenanceEnds) {
-        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${thirdTuesdayMaintenanceEndDate.toLocaleTimeString()} ET`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
-    } else if (isMaintenanceOver) {
-        tweetBody = `✅ Notice - The eAmusement Service is expected to be back online now`;
-        // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedEndedNotice && postTweet(tweetBody);
-        extendedMaintenancePostedFlags.postedEndedNotice = true;
-    }
-    
-    // to-do - prepare values for the next month.
-    const readyToBeReset = Object.values(extendedMaintenancePostedFlags).every((flagValue) => {
-        return flagValue === true;
-    });
-
-
-    return;
-}
-
+// key observer function that handles date + time checking for extended maintenance periods
 async function extendedMaintenanceObserver() {
     let tweetBody = '';
     const referenceDate = new Date();
@@ -134,20 +59,22 @@ async function extendedMaintenanceObserver() {
     referenceDate.setUTCDate(1);
     // console.log(referenceDate);
 
+    // finds first tuesday and sets referenceDate to it
     while (referenceDate.getDay() !== 2) {
         referenceDate.setDate(referenceDate.getDate() + 1);
     }
-    // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our current date
+    // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our recently set referenceDate
     const extendedMaintenanceDay = new Date(referenceDate.setDate(referenceDate.getDate() + 14));
     console.log('extended ',extendedMaintenanceDay);
 
+    // create new time object representing current time in JST
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + timezoneOffsetJapanUTC);
     console.log('current ', currentDate);
 
-    // when getting values, it is mandatory to getUTC__, because otherwise it will show in UTC +0 values.
-    // calling getUTC__ will provide us with time local to Japan, UTC+9
-
+    // begin date comparisons - Because our extendedMaintenanceDay date object is set on the third tuesday, we can reference our currentDate object to post warnings
+    // when getting values, it is mandatory to getUTC__, otherwise it will show in UTC +0 values
+    // calling getUTC__ will provide us with time local to Japan, UTC +9
     const is3DaysBeforeExtendedMaintenance = extendedMaintenanceDay.getUTCFullYear() === currentDate.getUTCFullYear() 
                                           && extendedMaintenanceDay.getUTCMonth() === currentDate.getUTCMonth() 
                                           && (extendedMaintenanceDay.getUTCDate() - currentDate.getUTCDate() === 3);
@@ -157,7 +84,10 @@ async function extendedMaintenanceObserver() {
     const isTodayExtendedMaintenance = extendedMaintenanceDay.getUTCFullYear() === currentDate.getUTCFullYear() 
                                     && extendedMaintenanceDay.getUTCMonth() === currentDate.getUTCMonth() 
                                     && extendedMaintenanceDay.getUTCDate() === currentDate.getUTCDate();
-    // extended maintenance from 2am 7am JST
+    
+    // begin time comparisons - Because the time portion to extendedMaintenanceDay is set in JST, we can manually check to see if the hours fall on maintenance times
+    // extended maintenance happens from 2am-7am JST
+    // an additional flag, isPastExtendedMaintenance is needed to determine if all the flags are safe to reset.
     const is2HoursBeforeExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 0);
     const isExactlyExtendedMaintenance = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 2);
     const is1HourBeforeExtendedMaintenanceEnds = isTodayExtendedMaintenance && (extendedMaintenanceDay.getUTCHours() === 6);
