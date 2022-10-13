@@ -106,37 +106,37 @@ async function extendedMaintenanceObserver() {
     // 1PM ET
     extendedMaintenanceDayTimeStart.setUTCHours(17, 0, 0, 0);
 
-    console.log('maintenance starts: ', extendedMaintenanceDayTimeStart.toLocaleString());
+    console.log('maintenance starts: ', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'}));
 
     const extendedMaintenanceDayTimeEnd = new Date(extendedMaintenanceDay);
     // 6PM ET
     extendedMaintenanceDayTimeEnd.setUTCHours(22, 0, 0, 0);
 
-    console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString());
+    console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { timeZone: 'America/New_York'}));
 
     // checking if conditions we set are true. if they are, set the tweetBody, postTweet, and set the flags to true.
     if (is3DaysBeforeExtendedMaintenance) {
-        tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted3DayWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted3DayWarning = true;
     } else if (is1DayBeforeExtendedMaintenance) {
-        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${extendedMaintenanceDayTimeStart.toLocaleString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted24HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeExtendedMaintenance) {
-        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be starting extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString()} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be starting extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted2HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted2HourWarning = true;
     } else if (isExactlyExtendedMaintenance) {
-        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedBeginsWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeExtendedMaintenanceEnds) {
-        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString()} ET`;
+        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
