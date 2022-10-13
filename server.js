@@ -12,6 +12,10 @@ app.get("/", (req, res) => {
     res.send("twitter-eamuse-warn");
 });
 
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+})
+
 // create a Twitter client with apikey+secret & accesstoken+secret
 // twitter account with elevated developer permissions is REQUIRED to use v1.tweet() functions
 // https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update
