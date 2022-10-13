@@ -87,4 +87,6 @@ node server.js
 * Weekday maintenance implementation
 
 ## 🤝 Contributing 
-### PRs are welcome! Please directly DM the [@eAmuse_schedule](https://twitter.com/eAmuse_schedule) account with suggestions, comments, or concerns. 
+PRs are welcome! Please directly DM the [@eAmuse_schedule](https://twitter.com/eAmuse_schedule) account with suggestions, comments, or concerns. 
+
+Additionally, feel free to log new issues with sufficient details regarding your concerns.
