@@ -3,7 +3,6 @@ import express from "express";
 import "dotenv/config";
 
 const app = express();
-const port = 5000;
 
 // expecting json
 app.use(express.json());
@@ -12,7 +11,7 @@ app.get("/", (req, res) => {
     res.send("twitter-eamuse-warn");
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log(`App listening on port ${port}`);
 })
 
