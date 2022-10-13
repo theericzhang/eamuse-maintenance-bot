@@ -34,7 +34,12 @@ Additionally, sending out Tweets that provide the user with information regardin
 This project uses [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) as its package manager.
 
 ### Getting environment variables
-A Twitter Developer account with elevated access is required to interface with Twitter API and its v1 endpoint, which allows our Express instance to post Tweets. Read more [here](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api#v2-access-leve). After creating an account and getting approved for elevated access, [enter the developer portal](https://developer.twitter.com/en/portal/projects-and-apps) and [create a new project](https://developer.twitter.com/en/portal/apps/new). 
+A Twitter Developer account with elevated access is required to interface with Twitter API and its v1 endpoint, which allows our Express instance to post Tweets. Read more [here](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api#v2-access-leve). 
+
+### ⚠️⚠️ Important Authentication Requirement
+For the purposes of this project, the account you are automating tweets from MUST be the same account you are using for developer purposes. In other words, it is necessary to create a separate Twitter account for this project. This separate Twitter account must also have developer Elevated Access. If you are interested in performing actions on behalf of another Twitter account, [check out Twitter's 3-legged OAuth flow](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens).
+
+After creating an account and getting approved for elevated access, [enter the developer portal](https://developer.twitter.com/en/portal/projects-and-apps) and [create a new project](https://developer.twitter.com/en/portal/apps/new). 
 
 Take note of your API Key and API Key Secret. They will be used to authenticate your Express client to use the v1 endpoint.
 
@@ -57,9 +62,6 @@ TWITTER_ACCESS_TOKEN = YOUR_TWITTER_ACCESS_TOKEN_HERE
 TWITTER_ACCESS_TOKEN_SECRET = YOUR_TWITTER_ACCESS_TOKEN_SECRET_HERE
 TWITTER_API_KEY = YOUR_TWITTER_API_KEY_HERE
 TWITTER_API_SECRET = YOUR_TWITTER_API_SECRET_HERE
-TWITTER_BEARER_TOKEN = YOUR_TWITTER_BEARER_TOKEN_HERE
-TWITTER_CLIENT_ID = YOUR_TWITTER_CLIENT_ID_HERE
-TWITTER_CLIENT_SECRET =YOUR_TWITTER_CLIENT_SECRET_HERE
 ```
 
 Install dependencies 
