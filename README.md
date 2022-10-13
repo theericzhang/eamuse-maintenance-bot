@@ -84,7 +84,7 @@ node server.js
 * Alpha release testing to a small group of users. Awaiting the next scheduled Extended Maintenance which is happening on 10/17/2022 @ 13:00 ET
 ### Next Up
 * Qualitative survey
-* Weekday maintenance implementation
+* Weekday maintenance warning implementation
 
 ## 🤝 Contributing 
 PRs are welcome! Please directly DM the [@eAmuse_schedule](https://twitter.com/eAmuse_schedule) account with suggestions, comments, or concerns. 
