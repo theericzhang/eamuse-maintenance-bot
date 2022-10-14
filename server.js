@@ -114,6 +114,9 @@ async function extendedMaintenanceObserver() {
 
     console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { timeZone: 'America/New_York'}));
 
+    extendedMaintenanceDayTimeStart.setDate(extendedMaintenanceDayTimeEnd.getDate() - 1);
+    extendedMaintenanceDayTimeEnd.setDate(extendedMaintenanceDayTimeEnd.getDate() - 1);
+
     // checking if conditions we set are true. if they are, set the tweetBody, postTweet, and set the flags to true.
     if (is3DaysBeforeExtendedMaintenance) {
         tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
