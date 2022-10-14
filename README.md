@@ -8,7 +8,7 @@ During eAmusement's Maintenance periods, players cannot use an eAmusement pass t
 
 * ❌ All eAmusement branded games are put offline for maintenance
 * ❌ Third Tuesdays from 02:00 - 07:00 JST falls on the prior Monday from 13:00 - 18:00 ET, where the Western player base remains awake
-* ❌ Some players unfortunately trips to the arcade without knowing Extended Maintenance is happening
+* ❌ Some players unfortunately make trips to the arcade without knowing Extended Maintenance is taking place
 
 With a predictable schedule, we can create an automated application that interfaces with the Twitter API, posting Extended Maintenance warnings prior to scheduled service. 
 
@@ -17,7 +17,7 @@ With a predictable schedule, we can create an automated application that interfa
 ![An example of a warning Tweet](/assets/tweet_example.png)
 
 ## 📅 Tweet Schedules
-In order to accomodate for user's differing Twitter timeline behavior, it is critical to send out scheduled tweets in multiple intervals.
+In order to accomodate for differing Twitter timeline behavior, it is critical to send out scheduled tweets in multiple intervals.
 
 Currently, Tweets are scheduled to post as follows:
 * Three days before Extended Maintenance day
