@@ -80,10 +80,10 @@ node server.js
 ## 🛣️ Roadmap
 ### Recently Released
 * Core functionality implemented (Extended Maintenance scheduled tweets)
-### In Progress
 * Alpha release testing to a small group of users. Awaiting the next scheduled Extended Maintenance which is happening on 10/17/2022 @ 13:00 ET
+### In Progress
+* Qualitative survey (as of 10/17)
 ### Next Up
-* Qualitative survey
 * Weekday maintenance warning implementation
 
 ## 🤝 Contributing 
