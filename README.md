@@ -1,12 +1,12 @@
-# 🤖 🐦 eAmusement Maintenance Bot
+# 🤖 🐦 e-amusement Maintenance Bot
 
-eAmusement Maintenance Bot is an [Express](https://expressjs.com/) application that serves vigilant maintenance warnings as Tweets on the Twitter account, [@eAmuse_schedule](https://twitter.com/eAmuse_schedule). 
+e-amusement Maintenance Bot is an [Express](https://expressjs.com/) application that serves vigilant maintenance warnings as Tweets on the Twitter account, [@eamuse_schedule](https://twitter.com/eamuse_schedule). 
 
 ## 🎯 Target Problem & Solution
 
-During eAmusement's Maintenance periods, players cannot use an eAmusement pass to log into certain games, limiting many of its in-game features. The Extended Maintenance, which falls on the third Tuesday of every month from 02:00 - 07:00 JST, is of particular concern for the following reasons:
+During e-amusement's Maintenance periods, players cannot use an e-amusement pass to log into certain games, limiting many of its in-game features. The Extended Maintenance, which falls on the third Tuesday of every month from 02:00 - 07:00 JST, is of particular concern for the following reasons:
 
-* ❌ All eAmusement branded games are put offline for maintenance
+* ❌ All e-amusement branded games are put offline for maintenance
 * ❌ Third Tuesdays from 02:00 - 07:00 JST falls on the prior Monday from 13:00 - 18:00 ET, where the Western player base remains awake
 * ❌ Some players unfortunately make trips to the arcade without knowing Extended Maintenance is taking place
 
@@ -88,6 +88,6 @@ node server.js
 * Weekday maintenance warning implementation (?)
 
 ## 🤝 Contributing 
-PRs are welcome! Please directly DM the [@eAmuse_schedule](https://twitter.com/eAmuse_schedule) account with suggestions, comments, or concerns. 
+PRs are welcome! Please directly DM the [@eamuse_schedule](https://twitter.com/eamuse_schedule) account with suggestions, comments, or concerns. 
 
 Additionally, feel free to log new issues with sufficient details regarding your concerns.
