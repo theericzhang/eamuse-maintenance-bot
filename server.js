@@ -57,7 +57,7 @@ async function extendedMaintenanceObserver() {
     const timezoneOffsetJapanUTC = 9;
 
     // adding 9 to hour count to reflect JST
-    referenceDate.setHours(referenceDate.getHours() + timezoneOffsetJapanUTC);
+    referenceDate.setUTCHours(referenceDate.getUTCHours() + timezoneOffsetJapanUTC);
     // console.log(referenceDate);
     referenceDate.setUTCDate(1);
     console.log('reference date before finding tuesday - expected to be the 1st every time: ' ,referenceDate);
@@ -65,11 +65,11 @@ async function extendedMaintenanceObserver() {
     // finds first tuesday and sets referenceDate to it
     while (referenceDate.getUTCDay() !== 2) {
         console.log('should set here');
-        referenceDate.setDate(referenceDate.getDate() + 1);
+        referenceDate.setUTCDate(referenceDate.getUTCDate() + 1);
     }
     console.log('reference date after finding tuesday - expected to be the first tuesday every time: ',referenceDate);
     // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our recently set referenceDate
-    const extendedMaintenanceDay = new Date(referenceDate.setDate(referenceDate.getDate() + 14));
+    const extendedMaintenanceDay = new Date(referenceDate.setUTCDate(referenceDate.getUTCDate() + 14));
     console.log('extended ',extendedMaintenanceDay);
 
     // create new time object representing current time in JST
@@ -119,27 +119,38 @@ async function extendedMaintenanceObserver() {
 
     // checking if conditions we set are true. if they are, set the tweetBody, postTweet, and set the flags to true.
     if (is3DaysBeforeExtendedMaintenance) {
-        tweetBody = `⚠️Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
+        tweetBody = `⚠️ Warning - In THREE days, the eAmusement Service will be undergoing extended maintenance, beginning Monday ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted3DayWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted3DayWarning = true;
     } else if (is1DayBeforeExtendedMaintenance) {
-        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
+        tweetBody = `⚠️ Warning - The eAmusement Service will be undergoing extended maintenance beginning TOMORROW, Monday ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted24HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeExtendedMaintenance) {
-        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be starting extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
+        tweetBody = `🚨 Alert - In TWO hours, the eAmusement Service will be starting extended maintenance, beginning at ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit',
+        minute: '2-digit'})} ET and ending at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted2HourWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted2HourWarning = true;
     } else if (isExactlyExtendedMaintenance) {
-        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
+        tweetBody = `🚨 Alert - The eAmusement Service has started extended maintenance. eAmusement is expected to be back online at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit',
+        minute: '2-digit'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedBeginsWarning && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeExtendedMaintenanceEnds) {
-        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})} ET`;
+        tweetBody = `⚠️ Notice - The eAmusement Service is expected to be back online in ONE hour, at ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit',
+        minute: '2-digit'})} ET`;
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
