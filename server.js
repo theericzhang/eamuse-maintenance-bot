@@ -177,6 +177,7 @@ async function extendedMaintenanceObserver() {
     // reset the flags, making sure to also check that it's past maintenance. 
     // why? there is an edge case that it is 7:00am JST and 
     readyToBeReset && isPastExtendedMaintenance && resetFlags();
+    console.log('\n');
     return;
 }
 
