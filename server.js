@@ -106,13 +106,21 @@ async function extendedMaintenanceObserver() {
     // 1PM ET
     extendedMaintenanceDayTimeStart.setUTCHours(17, 0, 0, 0);
 
-    console.log('maintenance starts: ', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York'}));
+    console.log('maintenance starts: ', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'}));
 
     const extendedMaintenanceDayTimeEnd = new Date(extendedMaintenanceDay);
     // 6PM ET
     extendedMaintenanceDayTimeEnd.setUTCHours(22, 0, 0, 0);
 
-    console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { timeZone: 'America/New_York'}));
+    console.log('maintenance ends: ', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'}));
 
     extendedMaintenanceDayTimeStart.setDate(extendedMaintenanceDayTimeEnd.getDate() - 1);
     extendedMaintenanceDayTimeEnd.setDate(extendedMaintenanceDayTimeEnd.getDate() - 1);
