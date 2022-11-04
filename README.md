@@ -78,13 +78,14 @@ node server.js
 
 
 ## 🛣️ Roadmap
-### Recently Released
+### Recently Completed
 * Core functionality implemented (Extended Maintenance scheduled tweets)
 * Alpha release testing to a small group of users. Awaiting the next scheduled Extended Maintenance which is happening on 10/17/2022 @ 13:00 ET
-### In Progress
 * Qualitative survey (as of 10/17)
+### In Progress
+* Low sev bug fix - https://github.com/theericzhang/eamuse-maintenance-bot/issues/1
 ### Next Up
-* Weekday maintenance warning implementation
+* Weekday maintenance warning implementation (?)
 
 ## 🤝 Contributing 
 PRs are welcome! Please directly DM the [@eAmuse_schedule](https://twitter.com/eAmuse_schedule) account with suggestions, comments, or concerns. 
