@@ -1,3 +1,11 @@
+/**
+ * e-amusement Maintenance Bot
+ * server.js
+ * authored by twitter/@anericzhang
+ * creation date: 10/10/22
+ * repository: https://github.com/theericzhang/eamuse-maintenance-bot
+ */
+
 import { TwitterApi } from "twitter-api-v2";
 import express from "express";
 import "dotenv/config";
@@ -39,6 +47,10 @@ let extendedMaintenancePostedFlags = {
     postedEndedNotice : false
 };
 
+/**
+ * Resets all truth flags used to guard the postTweet() function.
+ * @returns {void} - all truth flags from extendedMaintenancePostedFlags will be set to false 
+ */
 function resetFlags() {
     Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = false);
 }
