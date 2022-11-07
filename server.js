@@ -55,6 +55,7 @@ function resetFlags() {
     Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = false);
 }
 
+// declare reusable options object when .toLocaleTimeString() is called
 const toLocaleTimeStringOptionsVerbose = { 
     timeZone: 'America/New_York', 
     year: 'numeric',
@@ -70,6 +71,7 @@ const toLocaleTimeStringOptionsShort = {
     minute: '2-digit'
 };
 
+// prevent edits to locale options
 Object.freeze(toLocaleTimeStringOptionsVerbose);
 Object.freeze(toLocaleTimeStringOptionsShort);
 
@@ -92,14 +94,18 @@ Object.freeze(toLocaleTimeStringOptionsShort);
     return tweetBodyBank[index];
 }
 
+let isCurrentlyPosting = false;
+
 /**
  * Helper function to post tweetBody. This function is called when all timing conditions are met
  * @param {string} tweetBody - The Tweet body message to be sent to Twitter
  */
 
 async function postTweet(tweetBody) {
+    isCurrentlyPosting = true;
     await clientMain.v1.tweet(tweetBody);
     console.log('Posted! - ', tweetBody);
+    isCurrentlyPosting = false;
 }
 
 // key observer function that handles date + time checking for extended maintenance periods
@@ -185,40 +191,40 @@ async function extendedMaintenanceObserver() {
     if (is3DaysBeforeExtendedMaintenance) {
         tweetBody = getMessage(0, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted3DayWarning && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.posted3DayWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted3DayWarning = true;
     } else if (is1DayBeforeExtendedMaintenance) {
         tweetBody = getMessage(1, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted24HourWarning && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.posted24HourWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeExtendedMaintenance) {
         tweetBody = getMessage(2, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.posted2HourWarning && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.posted2HourWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted2HourWarning = true;
     } else if (isExactlyExtendedMaintenance) {
         tweetBody = getMessage(3, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedBeginsWarning && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.postedBeginsWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeExtendedMaintenanceEnds) {
         tweetBody = getMessage(4, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
     } else if (extendedMaintenanceEnds) {
         tweetBody = getMessage(5, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
         // post tweetBody if postedFlag value is false
-        !extendedMaintenancePostedFlags.postedEndedNotice && !isPastExtendedMaintenance && postTweet(tweetBody);
+        !extendedMaintenancePostedFlags.postedEndedNotice && !isCurrentlyPosting && !isPastExtendedMaintenance && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndedNotice = true;
     }
 
     console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
     console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
 
-    console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', {...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo"}));
-    console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', {...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo"}));
+    console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
+    console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
     console.log('\n');
 
     // check that all flags are true. this will signal that flags are ready to be reset.
@@ -227,9 +233,8 @@ async function extendedMaintenanceObserver() {
     });
 
     // reset the flags, making sure to also check that it's past maintenance. 
-    // why? there is an edge case that it is 7:00am JST and 
     readyToBeReset && isPastExtendedMaintenance && resetFlags();
     return;
 }
 
-const dateCheckingHandler = setInterval(() => extendedMaintenanceObserver(), 6000);
+const dateCheckingHandler = setInterval(() => extendedMaintenanceObserver(), 15000);
