@@ -87,6 +87,8 @@ node server.js
 ### Next Up
 * Place upcoming Extended Maintenance information in bio for quick access
 * Weekday maintenance warning implementation (?)
+* Discord Bot integration
+* Migration to Azure once Heroku ends free Dynos
 
 ## 🤝 Contributing 
 PRs are welcome! Please directly DM the [@eamuse_schedule](https://twitter.com/eamuse_schedule) account with suggestions, comments, or concerns. 
