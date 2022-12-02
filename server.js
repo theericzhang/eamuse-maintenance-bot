@@ -105,6 +105,7 @@ async function postTweet(tweetBody) {
     isCurrentlyPosting = true;
     await clientMain.v1.tweet(tweetBody);
     console.log('Posted! - ', tweetBody);
+    console.log('Flags - ', extendedMaintenancePostedFlags);
     isCurrentlyPosting = false;
 }
 
@@ -125,22 +126,22 @@ async function extendedMaintenanceObserver() {
     // adding 9 to hour count to reflect JST
     referenceDate.setUTCHours(referenceDate.getUTCHours() + timezoneOffsetJapanUTC);
     referenceDate.setUTCDate(1);
-    console.log('reference date before finding tuesday - expected to be the 1st every time: ' ,referenceDate);
+    // console.log('reference date before finding tuesday - expected to be the 1st every time: ' ,referenceDate);
 
     // finds first tuesday and sets referenceDate to it
     while (referenceDate.getUTCDay() !== 2) {
         referenceDate.setUTCDate(referenceDate.getUTCDate() + 1);
     }
-    console.log('reference date after finding tuesday - expected to be the first tuesday every time: ',referenceDate);
+    // console.log('reference date after finding tuesday - expected to be the first tuesday every time: ',referenceDate);
 
     // getting extended maintenance day, which is the third tuesday in Japan. Just add 14 to our recently set referenceDate
     const extendedMaintenanceDay = new Date(referenceDate.setUTCDate(referenceDate.getUTCDate() + 14));
-    console.log('extended maintenance day in JP', extendedMaintenanceDay);
+    // console.log('extended maintenance day in JP', extendedMaintenanceDay);
 
     // create new time object representing current time in JST
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + timezoneOffsetJapanUTC);
-    console.log('current time in JP', currentDate);
+    // console.log('current time in JP', currentDate);
 
     // begin date comparisons - Because our extendedMaintenanceDay date object is set on the third tuesday, we can reference our currentDate object to post warnings
     // when getting values, it is mandatory to getUTC__, otherwise it will show in UTC +0 values
