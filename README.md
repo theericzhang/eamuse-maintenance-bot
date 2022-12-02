@@ -84,11 +84,11 @@ node server.js
 * Qualitative survey (as of 10/17)
 * Low sev bug fix - https://github.com/theericzhang/eamuse-maintenance-bot/issues/1
 ### In Progress
+* Migration to Azure once Heroku ends free Dynos
 ### Next Up
 * Place upcoming Extended Maintenance information in bio for quick access
 * Weekday maintenance warning implementation (?)
 * Discord Bot integration
-* Migration to Azure once Heroku ends free Dynos
 
 ## 🤝 Contributing 
 PRs are welcome! Please directly DM the [@eamuse_schedule](https://twitter.com/eamuse_schedule) account with suggestions, comments, or concerns. 
