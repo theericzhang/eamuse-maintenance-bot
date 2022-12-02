@@ -83,8 +83,8 @@ node server.js
 * Alpha release testing to a small group of users. Awaiting the next scheduled Extended Maintenance which is happening on 10/17/2022 @ 13:00 ET
 * Qualitative survey (as of 10/17)
 * Low sev bug fix - https://github.com/theericzhang/eamuse-maintenance-bot/issues/1
+* Migration to Azure once Heroku ends free Dynos (Completed 12/1)
 ### In Progress
-* Migration to Azure once Heroku ends free Dynos
 ### Next Up
 * Place upcoming Extended Maintenance information in bio for quick access
 * Weekday maintenance warning implementation (?)
