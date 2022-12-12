@@ -85,6 +85,7 @@ node server.js
 * Low sev bug fix - https://github.com/theericzhang/eamuse-maintenance-bot/issues/1
 * Migration to Azure once Heroku ends free Dynos (Completed 12/1)
 ### In Progress
+* West Coast time zone addition to tweets
 ### Next Up
 * Place upcoming Extended Maintenance information in bio for quick access
 * Weekday maintenance warning implementation (?)
