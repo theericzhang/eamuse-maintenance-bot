@@ -65,30 +65,46 @@ const toLocaleTimeStringOptionsVerbose = {
     minute: '2-digit'
 };
 
-const toLocaleTimeStringOptionsShort = { 
+const toLocaleTimeStringOptionsShortET = { 
     timeZone: 'America/New_York', 
     hour: '2-digit',
     minute: '2-digit'
 };
 
+const toLocaleTimeStringOptionsShortPT = {
+    timeZone: 'America/Los_Angeles',
+    hour: '2-digit',
+    minute: '2-digit'
+};
+
+const toLocaleDateStringOptions = {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+};
+
 // prevent edits to locale options
 Object.freeze(toLocaleTimeStringOptionsVerbose);
-Object.freeze(toLocaleTimeStringOptionsShort);
+Object.freeze(toLocaleTimeStringOptionsShortET);
+Object.freeze(toLocaleTimeStringOptionsShortPT);
+Object.freeze(toLocaleDateStringOptions);
 
 /**
  * Returns a relevant warning tweet message for the Twitter Client to post
  * @param {number} index - The message bank contains an array of premade tweets to send. Specify an index to select the message
- * @param {string} timeStart - The time that extended maintenance starts. Must be passed as myDateObject.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})
- * @param {string} timeEnd - The time that extended maintenance ends. Must be passed as myDateObject.toLocaleTimeString('en-US', { timeZone: 'America/New_York'})
+ * @param {string} dateOfMaintenance - The start date of the maintenance day, passed as a string. must be passed as .toLocaleString('en-US', toLocaleDateStringOptions) 
+ * @param {Date} timeStart - The time that extended maintenance starts. Must be passed as a pure date object
+ * @param {Date} timeEnd - The time that extended maintenance ends. Must be passed as a pure date object
  * @returns {string} - Parsed message that contains the relevant time to the message
  */
- function getMessage(index, timeStart, timeEnd) {
+ function getMessage(index, dateOfMaintenance, timeStart, timeEnd) {
     const tweetBodyBank = [
-        `⚠️ Warning - In THREE days, the e-amusement Service will be undergoing extended maintenance, beginning Monday ${timeStart} ET and ending at ${timeEnd} ET`,
-        `⚠️ Warning - The e-amusement Service will be undergoing extended maintenance beginning TOMORROW, Monday ${timeStart} ET and ending at ${timeEnd} ET`,
-        `🚨 Alert - In TWO hours, the e-amusement Service will be starting extended maintenance, beginning at ${timeStart} ET and ending at ${timeEnd} ET`,
-        `🚨 Alert - The e-amusement Service has started extended maintenance. e-amusement is expected to be back online at ${timeEnd} ET`,
-        `⚠️ Notice - The e-amusement Service is expected to be back online in ONE hour, at ${timeEnd} ET`,
+        `⚠️ Warning - In THREE days, the e-amusement Service will be undergoing extended maintenance:\n\nMonday, ${dateOfMaintenance}\nBegins: ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT \nEnds: ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT`,
+        `⚠️ Warning - The e-amusement Service will be undergoing extended maintenance TOMORROW:\n\nMonday, ${dateOfMaintenance}\nBegins: ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT \nEnds: ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT`,
+        `🚨 Alert - In TWO hours, the e-amusement Service will be starting extended maintenance:\n\nBegins: ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeStart.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT \nEnds: ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT`,
+        `🚨 Alert - The e-amusement Service has started extended maintenance. e-amusement is expected to be back online at ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT`,
+        `⚠️ Notice - The e-amusement Service is expected to be back online in ONE hour, at ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShortPT)} PT`,
         `✅ Notice - The e-amusement Service is expected to be back online now`
     ];
     return tweetBodyBank[index];
