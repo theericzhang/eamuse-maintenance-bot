@@ -210,32 +210,62 @@ async function extendedMaintenanceObserver() {
 
     // checking if conditions we set are true. if they are, set the tweetBody, postTweet, and set the flags to true.
     if (is3DaysBeforeExtendedMaintenance) {
-        tweetBody = getMessage(0, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            0, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted3DayWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted3DayWarning = true;
     } else if (is1DayBeforeExtendedMaintenance) {
-        tweetBody = getMessage(1, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            1, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted24HourWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted24HourWarning = true;
     } else if (is2HoursBeforeExtendedMaintenance) {
-        tweetBody = getMessage(2, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            2, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.posted2HourWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.posted2HourWarning = true;
     } else if (isExactlyExtendedMaintenance) {
-        tweetBody = getMessage(3, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            3, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedBeginsWarning && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedBeginsWarning = true;
     } else if (is1HourBeforeExtendedMaintenanceEnds) {
-        tweetBody = getMessage(4, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            4, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedEndsIn1HourNotice && !isCurrentlyPosting && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
     } else if (extendedMaintenanceEnds) {
-        tweetBody = getMessage(5, extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsShort), extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', toLocaleTimeStringOptionsShort));
+        tweetBody = getMessage(
+            5, 
+            extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleDateStringOptions), 
+            extendedMaintenanceDayTimeStart, 
+            extendedMaintenanceDayTimeEnd
+        );
         // post tweetBody if postedFlag value is false
         !extendedMaintenancePostedFlags.postedEndedNotice && !isCurrentlyPosting && !isPastExtendedMaintenance && postTweet(tweetBody);
         extendedMaintenancePostedFlags.postedEndedNotice = true;
