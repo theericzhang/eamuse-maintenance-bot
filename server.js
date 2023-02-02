@@ -54,6 +54,7 @@ const extendedMaintenancePostedFlags = {
  * @returns {void} - all truth flags from extendedMaintenancePostedFlags will be set to false
  */
 function resetFlags() {
+    // eslint-disable-next-line no-return-assign
     Object.keys(extendedMaintenancePostedFlags).forEach((flag) => extendedMaintenancePostedFlags[flag] = false);
 }
 
