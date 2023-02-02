@@ -31,6 +31,13 @@ client.on('messageCreate', (message) => {
     console.log(message.content);
 });
 
+client.on('interactionCreate', (interaction) => {
+    if (interaction.isChatInputCommand()) {
+        interaction.reply({ content: 'Wassupp' });
+        console.log('Hello World');
+    }
+});
+
 async function main() {
     const commands = [
         {
