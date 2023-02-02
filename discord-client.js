@@ -24,6 +24,11 @@ client.login(TOKEN);
 // function to fire after the bot has logged in
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in`);
+
+    // find a channel called maintenance-reminders
+    const maintenanceReminderChannel = client.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
+    console.log(maintenanceReminderChannel.id);
+    maintenanceReminderChannel.send('We launched!');
 });
 
 // function to fire any time a message is created
@@ -41,12 +46,8 @@ client.on('interactionCreate', (interaction) => {
 async function main() {
     const commands = [
         {
-            name: 'testcommand1',
-            description: 'testCommand1Desc',
-        },
-        {
-            name: 'testcommand2',
-            description: 'testCommand1Desc',
+            name: 'getnextmaintenance',
+            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period',
         },
     ];
 
