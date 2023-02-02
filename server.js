@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /**
  * e-amusement Maintenance Bot
  * server.js
@@ -6,7 +7,7 @@
  * repository: https://github.com/theericzhang/eamuse-maintenance-bot
  */
 
-import { TwitterApi } from 'twitter-api-v2';
+// import { TwitterApi } from 'twitter-api-v2';
 import express from 'express';
 import 'dotenv/config';
 
@@ -23,17 +24,18 @@ app.listen(process.env.PORT || 5000, () => {
     console.log('App listening');
 });
 
+// DISABLED TWITTER CLIENT AS OF 2/2/23 DUE TO API POLICY CHANGES. RIP
 // create a Twitter client with apikey+secret & accesstoken+secret
 // twitter account with elevated developer permissions is REQUIRED to use v1.tweet() functions
 // https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update
-const clientMain = new TwitterApi(
-    {
-        appKey: process.env.TWITTER_API_KEY,
-        appSecret: process.env.TWITTER_API_SECRET,
-        accessToken: process.env.TWITTER_ACCESS_TOKEN,
-        accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-    },
-);
+// const clientMain = new TwitterApi(
+//     {
+//         appKey: process.env.TWITTER_API_KEY,
+//         appSecret: process.env.TWITTER_API_SECRET,
+//         accessToken: process.env.TWITTER_ACCESS_TOKEN,
+//         accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+//     },
+// );
 
 // these key values will set to true once time conditions are met
 // with these "use once" flags, we can make sure we are posting a tweet once during a monthly lifecycle
@@ -119,7 +121,7 @@ let isCurrentlyPosting = false;
 
 async function postTweet(tweetBody) {
     isCurrentlyPosting = true;
-    await clientMain.v1.tweet(tweetBody);
+    // await clientMain.v1.tweet(tweetBody);
     console.log('Posted! - ', tweetBody);
     console.log('Flags - ', extendedMaintenancePostedFlags);
     isCurrentlyPosting = false;
