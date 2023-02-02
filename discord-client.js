@@ -1,35 +1,56 @@
-// import 'dotenv/config';
-// import { REST } from '@discordjs/rest';
-// import { Routes } from 'discord-api-types/v9';
-// import { Client, Intents, Collection } from 'discord.js';
-// import * as fs from 'fs';
-// import * as path from 'path';
-
-// const client = new Client({
-//     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-// });
-
-// const commands = [];
-// client.commands = new Collection();
-
-// const commandsPath = path.join(__dirname, 'commands');
-// const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
-
-// for (const file of commandFiles) {
-//     const filePath = path.join(commandsPath, file);
-//     const command = filePath;
-
-//     client.commands.set(command.padStart.name,)
-// }
-
 import * as dotenv from 'dotenv';
-import { Client } from 'discord.js';
-import express from 'express';
+import {
+    Client, GatewayIntentBits, REST, Routes,
+} from 'discord.js';
 
 dotenv.config();
+const TOKEN = process.env.DISCORD_BOT_TOKEN;
+const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
+const GUILD_ID = process.env.DISCORD_GUILD_ID;
 
 const client = new Client({
-    intents: ['Guilds', 'GuildMessages'],
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+const rest = new REST({ version: '10' }).setToken(TOKEN);
+
+// log in and make the bot online
+client.login(TOKEN);
+
+// function to fire after the bot has logged in
+client.on('ready', () => {
+    console.log(`${client.user.tag} has logged in`);
+});
+
+// function to fire any time a message is created
+client.on('messageCreate', (message) => {
+    console.log(message.content);
+});
+
+async function main() {
+    const commands = [
+        {
+            name: 'testcommand1',
+            description: 'testCommand1Desc',
+        },
+        {
+            name: 'testcommand2',
+            description: 'testCommand1Desc',
+        },
+    ];
+
+    try {
+        console.log('Started refreshing application (/) commands.');
+        await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+            body: commands,
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+main();
