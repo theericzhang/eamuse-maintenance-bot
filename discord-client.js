@@ -1,7 +1,11 @@
 import * as dotenv from 'dotenv';
 import {
-    Client, GatewayIntentBits, REST, Routes,
+    Client,
+    GatewayIntentBits,
+    REST,
+    Routes,
 } from 'discord.js';
+import dateCheckingHandler from './helper-functions/observer/eamuse-observer';
 
 dotenv.config();
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
