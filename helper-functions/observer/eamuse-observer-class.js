@@ -20,6 +20,7 @@ class ExtendedMaintenanceObserver {
             postedEndedNotice: false,
         };
         this.nextMaintenanceDate = {
+            date: '',
             start: '',
             end: '',
         };
@@ -244,8 +245,9 @@ class ExtendedMaintenanceObserver {
         this.nextMaintenanceDate = {
             // startNY: extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
             // endNY: extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
-            start: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}\n${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
-            end: `Monday, ${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}\n${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
+            date: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}`,
+            start: `${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET (${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT)`,
+            end: `${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET (${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT)`,
         };
 
         console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose));
