@@ -8,6 +8,8 @@ class ExtendedMaintenanceObserver {
 
     #toLocaleDateStringOptions;
 
+    #toLocaleTimeStringOptionsDate;
+
     constructor() {
         this.extendedMaintenancePostedFlags = {
             posted3DayWarning: false,
@@ -40,6 +42,12 @@ class ExtendedMaintenanceObserver {
             minute: '2-digit',
         };
         this.#toLocaleDateStringOptions = {
+            timeZone: 'America/New_York',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        };
+        this.#toLocaleTimeStringOptionsDate = {
             timeZone: 'America/New_York',
             year: 'numeric',
             month: '2-digit',
@@ -236,8 +244,8 @@ class ExtendedMaintenanceObserver {
         this.nextMaintenanceDate = {
             // startNY: extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
             // endNY: extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
-            start: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose)} ET / ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
-            end: `Monday, ${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose)} ET / ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
+            start: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}\n${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
+            end: `Monday, ${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}\n${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
         };
 
         console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose));

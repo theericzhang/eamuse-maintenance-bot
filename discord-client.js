@@ -62,7 +62,7 @@ client.on('interactionCreate', (interaction) => {
         case 'getnextmaintenance':
             // get the next maintenance period
             // interaction.reply({ content: `Here's the next maintenance period: ${1}` });
-            embedReply.setTitle('Next Extended Maintenance Date: ');
+            embedReply.setTitle('📅 Next Extended Maintenance Date: ');
             // embedReply.setDescription('The next maintenance date');
             embedReply.addFields(
                 { name: 'Begins', value: myObserver.nextMaintenanceDate.start },
