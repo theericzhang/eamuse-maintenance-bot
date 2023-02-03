@@ -18,8 +18,8 @@ class ExtendedMaintenanceObserver {
             postedEndedNotice: false,
         };
         this.nextMaintenanceDate = {
-            startNY: '',
-            endNY: '',
+            start: '',
+            end: '',
         };
         this.#toLocaleTimeStringOptionsVerbose = {
             timeZone: 'America/New_York',
@@ -234,8 +234,10 @@ class ExtendedMaintenanceObserver {
         }
 
         this.nextMaintenanceDate = {
-            startNY: extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
-            endNY: extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
+            // startNY: extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
+            // endNY: extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
+            start: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose)} ET / ${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
+            end: `Monday, ${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose)} ET / ${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
         };
 
         console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose));

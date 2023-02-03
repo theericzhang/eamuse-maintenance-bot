@@ -65,8 +65,8 @@ client.on('interactionCreate', (interaction) => {
             embedReply.setTitle('Next Extended Maintenance Date: ');
             // embedReply.setDescription('The next maintenance date');
             embedReply.addFields(
-                { name: 'Begins', value: myObserver.nextMaintenanceDate.startNY },
-                { name: 'Ends', value: myObserver.nextMaintenanceDate.endNY },
+                { name: 'Begins', value: myObserver.nextMaintenanceDate.start },
+                { name: 'Ends', value: myObserver.nextMaintenanceDate.end },
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
             );
