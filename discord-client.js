@@ -24,11 +24,8 @@ client.login(TOKEN);
 function globalPostAllServers(messagePayload) {
     // find a channel called maintenance-reminders and send a test message
     client.guilds.cache.forEach((guild) => {
-        guild.channels.cache.forEach((channel) => {
-            if (channel.name === 'maintenance-reminders') {
-                channel.send(messagePayload);
-            }
-        });
+        const targetChannel = guild.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
+        targetChannel.send(messagePayload);
     });
 }
 
