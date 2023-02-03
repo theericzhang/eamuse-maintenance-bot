@@ -48,8 +48,16 @@ client.on('messageCreate', (message) => {
 
 client.on('interactionCreate', (interaction) => {
     if (interaction.isChatInputCommand()) {
-        interaction.reply({ content: 'Wassupp' });
-        console.log('Hello World');
+        const inputCommand = interaction.commandName;
+        if (inputCommand === 'getnextmaintenance') {
+            // get the next maintenance period
+            interaction.reply({ content: `Here's the next maintenance period: ${1}` });
+        } else if (inputCommand === 'doessomethingelse') {
+            // do something else
+            interaction.reply({ content: 'Something else!' });
+        } else {
+            interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
+        }
     }
 });
 
@@ -60,6 +68,10 @@ async function main() {
     const commands = [
         {
             name: 'getnextmaintenance',
+            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period',
+        },
+        {
+            name: 'doessomethingelse',
             description: 'Returns the date and time of the NEXT e-amusement extended maintenance period',
         },
     ];
