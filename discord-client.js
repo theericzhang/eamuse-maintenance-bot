@@ -21,25 +21,22 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 // log in and make the bot online
 client.login(TOKEN);
 
-// function to fire after the bot has logged in
-client.on('ready', () => {
-    console.log(`${client.user.tag} has logged in`);
-
-    // find a channel called maintenance-reminders
-    client.guilds.cache.forEach((guildPtr) => {
-        // console.log(guild);
-        // console.log(guildPtr.channels);
-        guildPtr.channels.cache.forEach((channel) => {
+function globalPostAllServers(messagePayload) {
+    // find a channel called maintenance-reminders and send a test message
+    client.guilds.cache.forEach((guild) => {
+        guild.channels.cache.forEach((channel) => {
             if (channel.name === 'maintenance-reminders') {
-                channel.send('test');
+                channel.send(messagePayload);
             }
         });
     });
+}
 
-    console.log(client.guilds.cache.size);
-    // const maintenanceReminderChannel = client.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
-    // console.log(maintenanceReminderChannel.id);
-    // maintenanceReminderChannel.send('We launched!');
+// function to fire after the bot has logged in
+client.on('ready', () => {
+    console.log(`${client.user.tag} has logged in`);
+    // console.log('number of servers this bot is in: ', client.guilds.cache.size);
+    globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
 });
 
 // function to fire any time a message is created
@@ -53,12 +50,6 @@ client.on('interactionCreate', (interaction) => {
         console.log('Hello World');
     }
 });
-
-// const arrayOfGuildIDs = client.guilds.cache.map((guild) => guild.id);
-
-// arrayOfGuildIDs.forEach((guildID) => {
-//     console.log(guildID);
-// });
 
 const arrayOfGuilds = client.guilds.cache;
 console.log(arrayOfGuilds);
