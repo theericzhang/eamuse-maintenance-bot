@@ -51,6 +51,7 @@ class ExtendedMaintenanceObserver {
      * @param {Date} timeEnd - The time that extended maintenance ends. Must be passed as a pure date object
      * @returns {string} - Parsed message that contains the relevant time to the message
      */
+
     getMessage(index, dateOfMaintenance, timeStart, timeEnd) {
         const messageBodyBank = [
             `⚠️ Warning - In THREE days, the e-amusement Service will be undergoing extended maintenance:\n\nMonday, ${dateOfMaintenance}\nBegins: ${timeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${timeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT \nEnds: ${timeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET / ${timeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT`,
@@ -78,6 +79,7 @@ class ExtendedMaintenanceObserver {
      * Resets all truth flags used to guard the postTweet() function.
      * @returns {void} - all truth flags from extendedMaintenancePostedFlags will be set to false
      */
+
     resetFlags() {
     // eslint-disable-next-line no-return-assign
         Object.keys(this.extendedMaintenancePostedFlags).forEach((flag) => this.extendedMaintenancePostedFlags[flag] = false);
@@ -227,12 +229,12 @@ class ExtendedMaintenanceObserver {
             this.extendedMaintenancePostedFlags.postedEndedNotice = true;
         }
 
-        // console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
-        // console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
+        console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose));
+        console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose));
 
-        // console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-        // console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-        // console.log('\n');
+        console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...this.#toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+        console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...this.#toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+        console.log('\n');
 
         // check that all flags are true. this will signal that flags are ready to be reset.
         const readyToBeReset = Object.values(this.extendedMaintenancePostedFlags).every((flagValue) => flagValue === true);

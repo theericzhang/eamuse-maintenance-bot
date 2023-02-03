@@ -241,12 +241,12 @@ async function extendedMaintenanceObserver() {
         extendedMaintenancePostedFlags.postedEndedNotice = true;
     }
 
-    // console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
-    // console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
+    console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
+    console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
 
-    // console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-    // console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-    // console.log('\n');
+    console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+    console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+    console.log('\n');
 
     // check that all flags are true. this will signal that flags are ready to be reset.
     const readyToBeReset = Object.values(extendedMaintenancePostedFlags).every((flagValue) => flagValue === true);

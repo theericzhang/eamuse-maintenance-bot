@@ -6,7 +6,8 @@ import {
     REST,
     Routes,
 } from 'discord.js';
-import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
+// import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
+import ExtendedMaintenanceObserver from './helper-functions/observer/eamuse-observer-class.js';
 
 dotenv.config();
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
@@ -67,6 +68,10 @@ client.on('interactionCreate', (interaction) => {
 
 const arrayOfGuilds = client.guilds.cache;
 console.log(arrayOfGuilds);
+
+const myObserver = new ExtendedMaintenanceObserver();
+// myObserver.extendedMaintenanceObserver();
+// const interval = setInterval(() => myObserver.extendedMaintenanceObserver(), 1000);
 
 async function main() {
     const commands = [
