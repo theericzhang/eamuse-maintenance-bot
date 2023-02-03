@@ -66,8 +66,8 @@ client.on('interactionCreate', (interaction) => {
             // embedReply.setDescription('The next maintenance date');
             embedReply.addFields(
                 { name: 'Date', value: myObserver.nextMaintenanceDate.date },
-                { name: 'Begin time', value: myObserver.nextMaintenanceDate.start },
-                { name: 'End time', value: myObserver.nextMaintenanceDate.end },
+                { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
+                { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
             );
