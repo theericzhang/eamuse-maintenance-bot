@@ -5,6 +5,7 @@ import {
     GatewayIntentBits,
     REST,
     Routes,
+    EmbedBuilder,
 } from 'discord.js';
 // import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
 import ExtendedMaintenanceObserver from './helper-functions/observer/eamuse-observer-class.js';
@@ -26,6 +27,10 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 // log in and make the bot online
 client.login(TOKEN);
+
+const myObserver = new ExtendedMaintenanceObserver();
+myObserver.extendedMaintenanceObserver();
+// const interval = setInterval(() => myObserver.extendedMaintenanceObserver(), 1000);
 
 function globalPostAllServers(messagePayload) {
     // find a channel called maintenance-reminders and send a test message
@@ -50,10 +55,22 @@ client.on('messageCreate', (message) => {
 client.on('interactionCreate', (interaction) => {
     if (interaction.isChatInputCommand()) {
         const inputCommand = interaction.commandName;
+
+        const embedReply = new EmbedBuilder();
+
         switch (inputCommand) {
         case 'getnextmaintenance':
             // get the next maintenance period
-            interaction.reply({ content: `Here's the next maintenance period: ${1}` });
+            // interaction.reply({ content: `Here's the next maintenance period: ${1}` });
+            embedReply.setTitle('Next Extended Maintenance Date: ');
+            // embedReply.setDescription('The next maintenance date');
+            embedReply.addFields(
+                { name: 'Begins', value: myObserver.nextMaintenanceDate.startNY },
+                { name: 'Ends', value: myObserver.nextMaintenanceDate.endNY },
+                // { name: 'Inline field title', value: 'Some value here', inline: true },
+                // { name: 'Inline field title', value: 'Some value here', inline: true },
+            );
+            interaction.reply({ embeds: [embedReply] });
             break;
         case 'doessomethingelse':
             // get the next maintenance period
@@ -68,10 +85,6 @@ client.on('interactionCreate', (interaction) => {
 
 const arrayOfGuilds = client.guilds.cache;
 console.log(arrayOfGuilds);
-
-const myObserver = new ExtendedMaintenanceObserver();
-// myObserver.extendedMaintenanceObserver();
-// const interval = setInterval(() => myObserver.extendedMaintenanceObserver(), 1000);
 
 async function main() {
     const commands = [
