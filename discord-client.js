@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import * as dotenv from 'dotenv';
 import {
     Client,
@@ -5,7 +6,7 @@ import {
     REST,
     Routes,
 } from 'discord.js';
-import dateCheckingHandler from './helper-functions/observer/eamuse-observer';
+import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
 
 dotenv.config();
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
