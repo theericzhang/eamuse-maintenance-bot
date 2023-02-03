@@ -1,3 +1,5 @@
+// TODO: Decide how to export this - Class, object?
+
 /* eslint-disable no-unused-expressions */
 // eamuse-observer is an observer function that creates a date object that updates every 15 seconds, checking for the next Extended Maintenance period.
 // When the current date satisfies an approached date condition (e.g. 3 days before EM), an event will fire.
@@ -96,7 +98,7 @@ async function postTweet(tweetBody) {
 // key observer function that handles date + time checking for extended maintenance periods
 
 /**
- * extendedMaintenanceObserver is called every 6 seconds to create a current Date object to compare to
+ * extendedMaintenanceObserver is called every 15 seconds to create a current Date object to compare to
  * the expected Extended Maintenance day. Extended Maintenance falls on every third Tuesday from 02:00 to 07:00 JST,
  * which falls on the Monday prior from 12:00 - 17:00 EST.
  * @returns {void}. Sends a Tweet to the eamuse_schedule Twitter account.
