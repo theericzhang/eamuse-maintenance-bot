@@ -49,14 +49,18 @@ client.on('messageCreate', (message) => {
 client.on('interactionCreate', (interaction) => {
     if (interaction.isChatInputCommand()) {
         const inputCommand = interaction.commandName;
-        if (inputCommand === 'getnextmaintenance') {
+        switch (inputCommand) {
+        case 'getnextmaintenance':
             // get the next maintenance period
             interaction.reply({ content: `Here's the next maintenance period: ${1}` });
-        } else if (inputCommand === 'doessomethingelse') {
-            // do something else
+            break;
+        case 'doessomethingelse':
+            // get the next maintenance period
             interaction.reply({ content: 'Something else!' });
-        } else {
+            break;
+        default:
             interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
+            break;
         }
     }
 });
