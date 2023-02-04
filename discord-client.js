@@ -26,7 +26,7 @@ const client = new Client({
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
-// log in and make the bot online
+// log in and put the bot online
 client.login(TOKEN);
 
 const myObserver = new ExtendedMaintenanceObserver();
@@ -44,7 +44,7 @@ function globalPostAllServers(messagePayload) {
 // function to fire after the bot has logged in
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in`);
-    // console.log('number of servers this bot is in: ', client.guilds.cache.size);
+    // TODO: use myObserver.extendedMaintenanceObserver. pass in a callback with globalPostAllServers, so that it gets called in postMessage();
     globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
 });
 
@@ -56,7 +56,6 @@ client.on('messageCreate', (message) => {
 client.on('interactionCreate', (interaction) => {
     if (interaction.isChatInputCommand()) {
         const inputCommand = interaction.commandName;
-
         const embedReply = new EmbedBuilder();
 
         if (inputCommand === 'getnextmaintenance') {
