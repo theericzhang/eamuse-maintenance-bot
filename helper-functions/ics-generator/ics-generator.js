@@ -11,7 +11,10 @@ export default function generateICS(nextMaintenanceDate) {
     const dateStart = nextMaintenanceDate.dateStartUTC;
     const dateEnd = nextMaintenanceDate.dateEndUTC;
 
-    if (!existsSync(`${process.cwd()}/event_${dateStart}.ics`)) {
+    // check to see if ics file has been written already
+    if (!existsSync(`${process.cwd()}/eamuse_mtn_${dateStart.toLocaleString('en-US', {
+        dateStyle: 'medium',
+    })}_reminder.ics`)) {
         icsCreator.createEvent({
             title: 'e-amusement Extended Maintenance',
             description: 'e-amusement Service will be down during this time',
@@ -34,9 +37,15 @@ export default function generateICS(nextMaintenanceDate) {
             if (error) {
                 console.log(error);
             }
-            writeFileSync(`${process.cwd()}/event_${dateStart}.ics`, value);
+            // write file to vm
+            writeFileSync(`${process.cwd()}/eamuse_mtn_${dateStart.toLocaleString('en-US', {
+                dateStyle: 'medium',
+            })}_reminder.ics`, value);
         });
     } else {
         console.log('already made file, returning existing file');
     }
+    return `${process.cwd()}/eamuse_mtn_${dateStart.toLocaleString('en-US', {
+        dateStyle: 'medium',
+    })}_reminder.ics`;
 }

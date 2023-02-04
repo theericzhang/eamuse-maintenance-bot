@@ -58,12 +58,10 @@ client.on('interactionCreate', (interaction) => {
         const inputCommand = interaction.commandName;
 
         const embedReply = new EmbedBuilder();
-        generateICS(myObserver.nextMaintenanceDate);
 
-        switch (inputCommand) {
-        case 'getnextmaintenance':
+        if (inputCommand === 'getnextmaintenance') {
             // get the next maintenance period
-            // interaction.reply({ content: `Here's the next maintenance period: ${1}` });
+            const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
             embedReply.setTitle('📅 Next Extended Maintenance Date: ');
             // embedReply.setDescription('The next maintenance date');
             embedReply.addFields(
@@ -73,16 +71,37 @@ client.on('interactionCreate', (interaction) => {
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
                 // { name: 'Inline field title', value: 'Some value here', inline: true },
             );
-            interaction.reply({ embeds: [embedReply] });
-            break;
-        case 'doessomethingelse':
+            interaction.reply({ embeds: [embedReply], files: [icsFilePath] });
+        } else if (inputCommand === 'doessomethingelse') {
             // get the next maintenance period
             interaction.reply({ content: 'Something else!' });
-            break;
-        default:
+        } else {
             interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
-            break;
         }
+
+        // switch (inputCommand) {
+        // case 'getnextmaintenance':
+        //     // get the next maintenance period
+        //     const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
+        //     embedReply.setTitle('📅 Next Extended Maintenance Date: ');
+        //     // embedReply.setDescription('The next maintenance date');
+        //     embedReply.addFields(
+        //         { name: 'Date', value: myObserver.nextMaintenanceDate.date },
+        //         { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
+        //         { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
+        //         // { name: 'Inline field title', value: 'Some value here', inline: true },
+        //         // { name: 'Inline field title', value: 'Some value here', inline: true },
+        //     );
+        //     interaction.reply({ embeds: [embedReply], files: [""] });
+        //     break;
+        // case 'doessomethingelse':
+        //     // get the next maintenance period
+        //     interaction.reply({ content: 'Something else!' });
+        //     break;
+        // default:
+        //     interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
+        //     break;
+        // }
     }
 });
 
