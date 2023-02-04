@@ -32,20 +32,29 @@ const myObserver = new ExtendedMaintenanceObserver();
 
 function globalPostAllServers(messagePayload) {
     // TODO: figure out how to format the output of the message. May need to restructure getMessage into discord embed
+    const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
     const embedReply = new EmbedBuilder();
-    embedReply.setTitle('📅 Next Extended Maintenance Date: ');
-    embedReply.addFields(
-        { name: 'Date', value: myObserver.nextMaintenanceDate.date },
-        { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
-        { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
-    );
+    if (messagePayload.format === 'AS-IS') {
+        embedReply.setTitle('📅 Next Extended Maintenance Date: ');
+        embedReply.addFields(
+            { name: 'Date', value: myObserver.nextMaintenanceDate.date },
+            { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
+            { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
+        );
+    } else if (messagePayload.format === 'ONLY-MESSAGE') {
+        embedReply.setTitle(messagePayload.message);
+    }
+
     // find a channel called maintenance-reminders and send a test message
     client.guilds.cache.forEach((guild) => {
         const targetChannel = guild.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
-        targetChannel.send(messagePayload);
+        // targetChannel.send(messagePayload);
+        targetChannel.send({ embeds: [embedReply], files: [icsFilePath] });
     });
 }
 
+// start observer function
+// eslint-disable-next-line no-unused-vars
 const interval = setInterval(() => myObserver.extendedMaintenanceObserver(globalPostAllServers), 1000);
 
 // function to fire after the bot has logged in
