@@ -63,13 +63,10 @@ client.on('interactionCreate', (interaction) => {
             // get the next maintenance period
             const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
             embedReply.setTitle('📅 Next Extended Maintenance Date: ');
-            // embedReply.setDescription('The next maintenance date');
             embedReply.addFields(
                 { name: 'Date', value: myObserver.nextMaintenanceDate.date },
                 { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
                 { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
-                // { name: 'Inline field title', value: 'Some value here', inline: true },
-                // { name: 'Inline field title', value: 'Some value here', inline: true },
             );
             interaction.reply({ embeds: [embedReply], files: [icsFilePath] });
         } else if (inputCommand === 'doessomethingelse') {
@@ -78,30 +75,6 @@ client.on('interactionCreate', (interaction) => {
         } else {
             interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
         }
-
-        // switch (inputCommand) {
-        // case 'getnextmaintenance':
-        //     // get the next maintenance period
-        //     const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
-        //     embedReply.setTitle('📅 Next Extended Maintenance Date: ');
-        //     // embedReply.setDescription('The next maintenance date');
-        //     embedReply.addFields(
-        //         { name: 'Date', value: myObserver.nextMaintenanceDate.date },
-        //         { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
-        //         { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
-        //         // { name: 'Inline field title', value: 'Some value here', inline: true },
-        //         // { name: 'Inline field title', value: 'Some value here', inline: true },
-        //     );
-        //     interaction.reply({ embeds: [embedReply], files: [""] });
-        //     break;
-        // case 'doessomethingelse':
-        //     // get the next maintenance period
-        //     interaction.reply({ content: 'Something else!' });
-        //     break;
-        // default:
-        //     interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
-        //     break;
-        // }
     }
 });
 
