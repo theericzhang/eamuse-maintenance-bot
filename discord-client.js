@@ -35,7 +35,7 @@ function globalPostAllServers(messagePayload) {
     const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
     const embedReply = new EmbedBuilder();
     if (messagePayload.format === 'AS-IS') {
-        embedReply.setTitle('📅 Next Extended Maintenance Date: ');
+        embedReply.setTitle(messagePayload.message);
         embedReply.addFields(
             { name: 'Date', value: myObserver.nextMaintenanceDate.date },
             { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
@@ -60,7 +60,7 @@ const interval = setInterval(() => myObserver.extendedMaintenanceObserver(global
 // function to fire after the bot has logged in
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in`);
-    globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
+    // globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
 });
 
 // function to fire any time a message is created
