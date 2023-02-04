@@ -20,6 +20,8 @@ class ExtendedMaintenanceObserver {
             postedEndedNotice: false,
         };
         this.nextMaintenanceDate = {
+            dateStartUTC: new Date(),
+            dateEndUTC: new Date(),
             date: '',
             start: '',
             end: '',
@@ -243,8 +245,8 @@ class ExtendedMaintenanceObserver {
         }
 
         this.nextMaintenanceDate = {
-            // startNY: extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
-            // endNY: extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsVerbose),
+            dateStartUTC: extendedMaintenanceDayTimeStart,
+            dateEndUTC: extendedMaintenanceDayTimeEnd,
             date: `Monday, ${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsDate)}`,
             start: `${extendedMaintenanceDayTimeStart.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET (${extendedMaintenanceDayTimeStart.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT)`,
             end: `${extendedMaintenanceDayTimeEnd.toLocaleString('en-US', this.#toLocaleTimeStringOptionsShortET)} ET (${extendedMaintenanceDayTimeEnd.toLocaleTimeString('en-US', this.#toLocaleTimeStringOptionsShortPT)} PT)`,

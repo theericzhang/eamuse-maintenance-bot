@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 // import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
 import ExtendedMaintenanceObserver from './helper-functions/observer/eamuse-observer-class.js';
+import generateICS from './helper-functions/ics-generator/ics-generator.js';
 
 dotenv.config();
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
@@ -57,6 +58,7 @@ client.on('interactionCreate', (interaction) => {
         const inputCommand = interaction.commandName;
 
         const embedReply = new EmbedBuilder();
+        generateICS(myObserver.nextMaintenanceDate);
 
         switch (inputCommand) {
         case 'getnextmaintenance':
