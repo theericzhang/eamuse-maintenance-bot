@@ -48,8 +48,11 @@ function globalPostAllServers(messagePayload) {
     // find a channel called maintenance-reminders and send a test message
     client.guilds.cache.forEach((guild) => {
         const targetChannel = guild.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
-        // targetChannel.send(messagePayload);
-        targetChannel.send({ embeds: [embedReply], files: [icsFilePath] });
+        // targetChannel.send(messagePayload.message);
+        // eslint-disable-next-line no-unused-expressions
+        messagePayload.attachICS
+            ? targetChannel.send({ embeds: [embedReply], files: [icsFilePath] })
+            : targetChannel.send({ embeds: [embedReply] });
     });
 }
 
@@ -99,11 +102,11 @@ async function main() {
     const commands = [
         {
             name: 'getnextmaintenance',
-            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period along with an .ics calendar file',
+            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period.',
         },
         {
             name: 'doessomethingelse',
-            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period',
+            description: 'Does something else.',
         },
     ];
 
