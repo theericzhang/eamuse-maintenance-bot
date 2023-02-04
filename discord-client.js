@@ -31,7 +31,7 @@ client.login(TOKEN);
 const myObserver = new ExtendedMaintenanceObserver();
 
 function globalPostAllServers(messagePayload) {
-    // TODO: figure out how to format the output of the message. May need to restructure getMessage into discord embed
+    // TODO: figure out how to get next maintenance date AFTER current has passed. e.g. EM on 2/20/23, EM concludes, user does /getnextmaintenancedate, how do we get the march date?
     const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
     const embedReply = new EmbedBuilder();
     if (messagePayload.format === 'AS-IS') {
