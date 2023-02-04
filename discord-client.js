@@ -26,10 +26,19 @@ const client = new Client({
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
-// log in and put the bot online
+// log in and put the bot online. create an instance of the ExtendedMaintenanceObserver.
 client.login(TOKEN);
+const myObserver = new ExtendedMaintenanceObserver();
 
 function globalPostAllServers(messagePayload) {
+    // TODO: figure out how to format the output of the message. May need to restructure getMessage into discord embed
+    const embedReply = new EmbedBuilder();
+    embedReply.setTitle('📅 Next Extended Maintenance Date: ');
+    embedReply.addFields(
+        { name: 'Date', value: myObserver.nextMaintenanceDate.date },
+        { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
+        { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
+    );
     // find a channel called maintenance-reminders and send a test message
     client.guilds.cache.forEach((guild) => {
         const targetChannel = guild.channels.cache.find((channel) => channel.name === 'maintenance-reminders');
@@ -37,14 +46,11 @@ function globalPostAllServers(messagePayload) {
     });
 }
 
-const myObserver = new ExtendedMaintenanceObserver();
-// myObserver.extendedMaintenanceObserver();
 const interval = setInterval(() => myObserver.extendedMaintenanceObserver(globalPostAllServers), 1000);
 
 // function to fire after the bot has logged in
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in`);
-    // TODO: figure out how to format the output of the message. May need to restructure getMessage into discord embed
     globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
 });
 
