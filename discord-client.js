@@ -44,7 +44,7 @@ const interval = setInterval(() => myObserver.extendedMaintenanceObserver(global
 // function to fire after the bot has logged in
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in`);
-    // TODO: use myObserver.extendedMaintenanceObserver. pass in a callback with globalPostAllServers, so that it gets called in postMessage();
+    // TODO: figure out how to format the output of the message. May need to restructure getMessage into discord embed
     globalPostAllServers(`number of servers this bot is in: ${client.guilds.cache.size}`);
 });
 
