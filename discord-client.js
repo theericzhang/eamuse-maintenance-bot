@@ -6,6 +6,9 @@ import {
     REST,
     Routes,
     EmbedBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder,
 } from 'discord.js';
 // import dateCheckingHandler from './helper-functions/observer/eamuse-observer.js';
 import ExtendedMaintenanceObserver from './helper-functions/observer/eamuse-observer-class.js';
@@ -75,29 +78,41 @@ client.on('messageCreate', (message) => {
     console.log(message.content);
 });
 
-client.on('interactionCreate', (interaction) => {
-    if (interaction.isChatInputCommand()) {
-        const inputCommand = interaction.commandName;
-        const embedReply = new EmbedBuilder();
+const sendCalendarReminder = new ButtonBuilder()
+    .setCustomId('primary')
+    .setLabel('Send me a calendar reminder!')
+    .setStyle(ButtonStyle.Primary);
+const actionRow = new ActionRowBuilder()
+    .addComponents(sendCalendarReminder);
 
-        if (inputCommand === 'getnextmaintenance') {
-            // get the next maintenance period
-            const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
-            embedReply.setTitle('📅 Next Extended Maintenance Date: ');
-            embedReply.addFields(
-                { name: 'Date', value: myObserver.nextMaintenanceDate.date },
-                { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
-                { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
-            );
-            embedReply.setTimestamp();
-            embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
-            interaction.reply({ embeds: [embedReply], files: [icsFilePath] });
-        } else if (inputCommand === 'doessomethingelse') {
-            // get the next maintenance period
-            interaction.reply({ content: 'Something else!' });
-        } else {
-            interaction.reply({ content: 'Sorry, I didn\'t recognize that command' });
-        }
+// respond to button click
+client.on('interactionCreate', (interaction) => {
+    if (!interaction.isButton()) return;
+    console.log(interaction);
+    const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
+    interaction.reply({ files: [icsFilePath], ephemeral: true });
+});
+
+client.on('interactionCreate', (interaction) => {
+    if (!interaction.isChatInputCommand()) {
+        return;
+    }
+
+    const inputCommand = interaction.commandName;
+    const embedReply = new EmbedBuilder();
+
+    if (inputCommand === 'getnextmaintenance') {
+        // get the next maintenance period
+        // const icsFilePath = generateICS(myObserver.nextMaintenanceDate);
+        embedReply.setTitle('📅 Next Extended Maintenance Date: ');
+        embedReply.addFields(
+            { name: 'Date', value: myObserver.nextMaintenanceDate.date },
+            { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
+            { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
+        );
+        embedReply.setTimestamp();
+        embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
+        interaction.reply({ embeds: [embedReply], components: [actionRow] });
     }
 });
 
