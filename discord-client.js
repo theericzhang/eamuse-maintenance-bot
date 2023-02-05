@@ -41,8 +41,12 @@ function globalPostAllServers(messagePayload) {
             { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
             { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
         );
+        embedReply.setTimestamp();
+        embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
     } else if (messagePayload.format === 'ONLY-MESSAGE') {
         embedReply.setTitle(messagePayload.message);
+        embedReply.setTimestamp();
+        embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
     }
 
     // find a channel called maintenance-reminders and send a test message
@@ -85,6 +89,8 @@ client.on('interactionCreate', (interaction) => {
                 { name: 'Begin time', value: myObserver.nextMaintenanceDate.start, inline: true },
                 { name: 'End time', value: myObserver.nextMaintenanceDate.end, inline: true },
             );
+            embedReply.setTimestamp();
+            embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
             interaction.reply({ embeds: [embedReply], files: [icsFilePath] });
         } else if (inputCommand === 'doessomethingelse') {
             // get the next maintenance period
