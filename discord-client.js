@@ -112,7 +112,7 @@ client.on('interactionCreate', (interaction) => {
         );
         embedReply.setTimestamp();
         embedReply.setFooter({ text: 'created by @anericzhang', iconURL: 'https://pbs.twimg.com/profile_images/1582126074384760856/EoddMKBj_x96.jpg' });
-        interaction.reply({ embeds: [embedReply], components: [actionRow] });
+        interaction.reply({ embeds: [embedReply], components: [actionRow], ephemeral: true });
     }
 });
 
