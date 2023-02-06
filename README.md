@@ -85,11 +85,13 @@ node server.js
 * Low sev bug fix - https://github.com/theericzhang/eamuse-maintenance-bot/issues/1
 * Migration to Azure once Heroku ends free Dynos (Completed 12/1)
 * West Coast time zone addition to tweets (Completed 12/12 & Confirmed 12/19 5P ET, Tested next 10 cycles, Awaiting prod confirmation on 12/19 5P ET)
+* Created a Discord bot that would post according to the same schedules as the Twitter bot. Includes interactivity, like on-demand slash commands and .ics generation. Needs channel management features (Completed 2/4)
 ### In Progress
-### Next Up
-* Place upcoming Extended Maintenance information in bio for quick access
-* Weekday maintenance warning implementation (?)
 * Discord Bot integration
+### Next Up
+* Add relative timestamps that are local to a user's machine for the discord bot
+* Update documentation
+* Place upcoming Extended Maintenance information in bio for quick access
 
 ## 🤝 Contributing 
 PRs are welcome! Please directly DM the [@eamuse_schedule](https://twitter.com/eamuse_schedule) account with suggestions, comments, or concerns. 
