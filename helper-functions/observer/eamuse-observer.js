@@ -1,40 +1,8 @@
+// TODO: Decide how to export this - Class, object?
+
 /* eslint-disable no-unused-expressions */
-/**
- * e-amusement Maintenance Bot
- * server.js
- * authored by twitter/@anericzhang
- * creation date: 10/10/22
- * repository: https://github.com/theericzhang/eamuse-maintenance-bot
- */
-
-import { TwitterApi } from 'twitter-api-v2';
-import express from 'express';
-import 'dotenv/config';
-
-const app = express();
-
-// expecting json
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.send('twitter-eamuse-warn');
-});
-
-app.listen(process.env.PORT || 5000, () => {
-    console.log('App listening');
-});
-
-// create a Twitter client with apikey+secret & accesstoken+secret
-// twitter account with elevated developer permissions is REQUIRED to use v1.tweet() functions
-// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update
-const clientMain = new TwitterApi(
-    {
-        appKey: process.env.TWITTER_API_KEY,
-        appSecret: process.env.TWITTER_API_SECRET,
-        accessToken: process.env.TWITTER_ACCESS_TOKEN,
-        accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-    },
-);
+// eamuse-observer is an observer function that creates a date object that updates every 15 seconds, checking for the next Extended Maintenance period.
+// When the current date satisfies an approached date condition (e.g. 3 days before EM), an event will fire.
 
 // these key values will set to true once time conditions are met
 // with these "use once" flags, we can make sure we are posting a tweet once during a monthly lifecycle
@@ -121,7 +89,7 @@ let isCurrentlyPosting = false;
 
 async function postTweet(tweetBody) {
     isCurrentlyPosting = true;
-    await clientMain.v1.tweet(tweetBody);
+    // await clientMain.v1.tweet(tweetBody);
     console.log('Posted! - ', tweetBody);
     console.log('Flags - ', extendedMaintenancePostedFlags);
     isCurrentlyPosting = false;
@@ -130,7 +98,7 @@ async function postTweet(tweetBody) {
 // key observer function that handles date + time checking for extended maintenance periods
 
 /**
- * extendedMaintenanceObserver is called every 6 seconds to create a current Date object to compare to
+ * extendedMaintenanceObserver is called every 15 seconds to create a current Date object to compare to
  * the expected Extended Maintenance day. Extended Maintenance falls on every third Tuesday from 02:00 to 07:00 JST,
  * which falls on the Monday prior from 12:00 - 17:00 EST.
  * @returns {void}. Sends a Tweet to the eamuse_schedule Twitter account.
@@ -273,12 +241,12 @@ async function extendedMaintenanceObserver() {
         extendedMaintenancePostedFlags.postedEndedNotice = true;
     }
 
-    // console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
-    // console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
+    console.log('maintenance in US/NY starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
+    console.log('maintenance in US/NY ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', toLocaleTimeStringOptionsVerbose));
 
-    // console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-    // console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: "Asia/Tokyo" }));
-    // console.log('\n');
+    console.log('maintenance in JP/TOKYO starts:', extendedMaintenanceDayTimeStart.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+    console.log('maintenance in JP/TOKYO ends:', extendedMaintenanceDayTimeEnd.toLocaleString('en-US', { ...toLocaleTimeStringOptionsVerbose, timeZone: 'Asia/Tokyo' }));
+    console.log('\n');
 
     // check that all flags are true. this will signal that flags are ready to be reset.
     const readyToBeReset = Object.values(extendedMaintenancePostedFlags).every((flagValue) => flagValue === true);
@@ -289,3 +257,5 @@ async function extendedMaintenanceObserver() {
 
 // eslint-disable-next-line no-unused-vars
 const dateCheckingHandler = setInterval(() => extendedMaintenanceObserver(), 15000);
+
+export default dateCheckingHandler;
