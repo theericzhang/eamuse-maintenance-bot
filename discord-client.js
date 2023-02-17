@@ -29,10 +29,6 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 // log in and put the bot online
 client.login(TOKEN);
 
-const myObserver = new ExtendedMaintenanceObserver();
-myObserver.extendedMaintenanceObserver();
-// const interval = setInterval(() => myObserver.extendedMaintenanceObserver(), 1000);
-
 function globalPostAllServers(messagePayload) {
     // find a channel called maintenance-reminders and send a test message
     client.guilds.cache.forEach((guild) => {
@@ -40,6 +36,10 @@ function globalPostAllServers(messagePayload) {
         targetChannel.send(messagePayload);
     });
 }
+
+const myObserver = new ExtendedMaintenanceObserver();
+// myObserver.extendedMaintenanceObserver();
+const interval = setInterval(() => myObserver.extendedMaintenanceObserver(globalPostAllServers), 1000);
 
 // function to fire after the bot has logged in
 client.on('ready', () => {
@@ -84,7 +84,7 @@ async function main() {
     const commands = [
         {
             name: 'getnextmaintenance',
-            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period',
+            description: 'Returns the date and time of the NEXT e-amusement extended maintenance period along with an .ics calendar file',
         },
         {
             name: 'doessomethingelse',

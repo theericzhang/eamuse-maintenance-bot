@@ -107,7 +107,7 @@ class ExtendedMaintenanceObserver {
      * @returns {void}. Sends a Tweet to the eamuse_schedule Twitter account.
      */
 
-    extendedMaintenanceObserver() {
+    extendedMaintenanceObserver(callbackGlobalPostAllServers) {
         let messageBody = '';
         const referenceDate = new Date();
         const timezoneOffsetJapanUTC = 9;
@@ -190,7 +190,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.posted3DayWarning && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.posted3DayWarning && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.posted3DayWarning && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.posted3DayWarning = true;
         } else if (is1DayBeforeExtendedMaintenance) {
             messageBody = this.getMessage(
@@ -200,7 +201,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.posted24HourWarning && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.posted24HourWarning && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.posted24HourWarning && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.posted24HourWarning = true;
         } else if (is2HoursBeforeExtendedMaintenance) {
             messageBody = this.getMessage(
@@ -210,7 +212,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.posted2HourWarning && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.posted2HourWarning && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.posted2HourWarning && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.posted2HourWarning = true;
         } else if (isExactlyExtendedMaintenance) {
             messageBody = this.getMessage(
@@ -220,7 +223,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.postedBeginsWarning && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.postedBeginsWarning && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.postedBeginsWarning && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.postedBeginsWarning = true;
         } else if (is1HourBeforeExtendedMaintenanceEnds) {
             messageBody = this.getMessage(
@@ -230,7 +234,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.postedEndsIn1HourNotice && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.postedEndsIn1HourNotice && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.postedEndsIn1HourNotice = true;
         } else if (extendedMaintenanceEnds) {
             messageBody = this.getMessage(
@@ -240,7 +245,8 @@ class ExtendedMaintenanceObserver {
                 extendedMaintenanceDayTimeEnd,
             );
             // post messageBody if postedFlag value is false
-            !this.extendedMaintenancePostedFlags.postedEndedNotice && !isPastExtendedMaintenance && postMessage(messageBody);
+            !this.extendedMaintenancePostedFlags.postedEndedNotice && !isPastExtendedMaintenance && callbackGlobalPostAllServers(messageBody);
+            // !this.extendedMaintenancePostedFlags.postedEndedNotice && !isPastExtendedMaintenance && postMessage(messageBody);
             this.extendedMaintenancePostedFlags.postedEndedNotice = true;
         }
 
